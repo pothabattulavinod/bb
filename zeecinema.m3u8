@@ -1,0 +1,25 @@
+#EXTM3U
+#EXT-X-VERSION:4
+## Created with Broadpeak BkS350 Origin Packager (version=1.11.16-26430)
+#EXT-X-MEDIA-SEQUENCE:432136383
+#EXT-X-INDEPENDENT-SEGMENTS
+#EXT-X-TARGETDURATION:4
+#USP-X-TIMESTAMP-MAP:MPEGTS=5383043244,LOCAL=2024-10-10T07:32:08.937300Z
+#EXT-X-PROGRAM-DATE-TIME:2024-10-10T07:32:08.937386Z
+#EXT-X-KEY:METHOD=AES-128,URI="Zeecinemalu1.isml/aes128.key"
+#EXTINF:4, no desc
+zeecinemalu1-audio_208482_und=208000-video=1087600-432136383.ts
+#EXTINF:4, no desc
+zeecinemalu1-audio_208482_und=208000-video=1087600-432136384.ts
+#EXTINF:4, no desc
+zeecinemalu1-audio_208482_und=208000-video=1087600-432136385.ts
+#EXTINF:4, no desc
+zeecinemalu1-audio_208482_und=208000-video=1087600-432136386.ts
+#EXTINF:4, no desc
+zeecinemalu1-audio_208482_und=208000-video=1087600-432136387.ts
+#EXTINF:4, no desc
+zeecinemalu1-audio_208482_und=208000-video=1087600-432136388.ts
+#EXTINF:4, no desc
+zeecinemalu1-audio_208482_und=208000-video=1087600-432136389.ts
+#EXTINF:4, no desc
+zeecinemalu1-audio_208482_und=208000-video=1087600-432136390.ts
