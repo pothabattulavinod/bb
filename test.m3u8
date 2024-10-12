@@ -1,4 +1,10 @@
 #EXTM3U
 #EXT-X-VERSION:3
+
+# Video Stream
 #EXT-X-STREAM-INF:PROGRAM-ID=0,BANDWIDTH=2855600,RESOLUTION=854x480
-https://vidfy.pm//media/2024/10/11/5YmnzhdHgjDh1p/240/240_playlist.m3u8
+https://vidfy.pm/media/2024/10/11/5YmnzhdHgjDh1p/240/240_playlist.m3u8
+
+# Audio Stream
+#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=128000
+https://vidfy.pm/media/2024/10/11/5YmnzhdHgjDh1p/240/240_audio.m3u8
