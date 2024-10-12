@@ -1,10 +1,14 @@
 #EXTM3U
 #EXT-X-VERSION:3
 
-# Video Stream
-#EXT-X-STREAM-INF:PROGRAM-ID=0,BANDWIDTH=2855600,RESOLUTION=854x480
-https://vidfy.pm/media/2024/10/11/5YmnzhdHgjDh1p/240/240_playlist.m3u8
+# 720p Stream
+#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1280x720
+https://vidfy.pm/media/2024/10/11/5YmnzhdHgjDh1p/720/720_playlist.m3u8
 
-# Audio Stream
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=128000
-https://vidfy.pm/media/2024/10/11/5YmnzhdHgjDh1p/240/240_audio.m3u8
+# 480p Stream
+#EXT-X-STREAM-INF:BANDWIDTH=2855600,RESOLUTION=854x480
+https://vidfy.pm/media/2024/10/11/5YmnzhdHgjDh1p/480/480_playlist.m3u8
+
+# 360p Stream
+#EXT-X-STREAM-INF:BANDWIDTH=800000,RESOLUTION=640x360
+https://vidfy.pm/media/2024/10/11/5YmnzhdHgjDh1p/360/360_playlist.m3u8
