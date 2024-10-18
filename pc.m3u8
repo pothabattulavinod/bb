@@ -1,5 +1,5 @@
 #EXTM3U
 #EXT-X-VERSION:3
-#EXTINF:10.0,
+#EXTINF:-1,
 https://streamtape.com/get_video?id=LJVKlkKaQbFRVgK&expires=1729338529&ip=F0MOKRSUFS9XKxR&token=p6kcSwzD7nzr&stream=1
 #EXT-X-ENDLIST
