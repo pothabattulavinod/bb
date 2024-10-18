@@ -1,0 +1,5 @@
+#EXTM3U
+#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=513109,RESOLUTION=720x304,FRAME-RATE=24.000,CODECS="avc1.64001e,mp4a.40.2"
+https://vpk1g9itdgtk.aghe-cdn.com/hls2/01/02322/f0sx8ob9kwiq_n/index-v1-a1.m3u8?t=epUmIoE9U7BMRIHZVFhbhnyTlAtr_-mYYr8HHVhKuOw&s=1729258985&e=129600&f=11613155&srv=0g7xgsanrz08&i=0.4&sp=500&p1=0g7xgsanrz08&p2=0g7xgsanrz08&asn=133287
+
+#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=37888,RESOLUTION=720x304,CODECS="avc1.64001e",URI="https://vpk1g9itdgtk.aghe-cdn.com/hls2/01/02322/f0sx8ob9kwiq_n/index-v1-a1.m3u8?t=epUmIoE9U7BMRIHZVFhbhnyTlAtr_-mYYr8HHVhKuOw&s=1729258985&e=129600&f=11613155&srv=0g7xgsanrz08&i=0.4&sp=500&p1=0g7xgsanrz08&p2=0g7xgsanrz08&asn=133287"
