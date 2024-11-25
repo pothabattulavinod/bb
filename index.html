@@ -19,21 +19,23 @@
             text-align: center;
         }
         .container {
+            max-width: 800px;
             padding: 20px;
+            margin: 0 auto;
         }
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 20px;
             color: #ffcc00; /* Golden yellow */
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
         p {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             margin-bottom: 20px;
             color: #b3e5fc; /* Soft blue */
         }
         .countdown {
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin-bottom: 20px;
             color: #ffd740; /* Yellow accent */
         }
@@ -42,8 +44,8 @@
         }
         .admission a {
             display: inline-block;
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 12px 20px;
+            font-size: 1rem;
             font-weight: bold;
             color: #0d47a1; /* Deep blue */
             background-color: #ffcc00; /* Golden yellow */
@@ -60,14 +62,15 @@
             margin-top: 30px;
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         .social-buttons a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background-color: #fff;
             border-radius: 50%;
             text-decoration: none;
@@ -82,12 +85,32 @@
             box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.4);
         }
         .social-buttons i {
-            font-size: 2.5rem; /* Extra thickness for icons */
+            font-size: 2rem; /* Extra thickness for icons */
         }
         footer {
-            margin-top: 50px;
-            font-size: 0.9rem;
+            margin-top: 40px;
+            font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.7);
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .admission a {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            .social-buttons a {
+                width: 45px;
+                height: 45px;
+                font-size: 1.8rem;
+            }
+            footer {
+                font-size: 0.7rem;
+            }
         }
     </style>
     <!-- Include Font Awesome for icons -->
