@@ -1,5 +1,6 @@
 #EXTM3U
-#EXTINF:-1, Video
+#EXTINF:-1, Video Stream
 https://pothabattulavinod.github.io/se/Psr/video.m3u8
-#EXTINF:-1, Audio
-https://pothabattulavinod.github.io/se/U/Pr.m4a
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",LANGUAGE="en",NAME="English",DEFAULT=YES,AUTOSELECT=YES,URI="https://pothabattulavinod.github.io/se/U/Pr.m4a"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",LANGUAGE="es",NAME="Spanish",DEFAULT=NO,AUTOSELECT=YES,URI="https://pothabattulavinod.github.io/se/U/Pr2.m4a"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",LANGUAGE="fr",NAME="French",DEFAULT=NO,AUTOSELECT=YES,URI="https://pothabattulavinod.github.io/se/U/Pr3.m4a"
