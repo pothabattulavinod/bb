@@ -1,4 +1,5 @@
 #EXTM3U
-#EXTINF:0,
-https://pothabattulavinod.github.io/se/ss/video.m3u8
-#EXT-X-ENDLIST
+#EXTINF:-1, Video
+https://pothabattulavinod.github.io/se/Psr/video.m3u8
+#EXTINF:-1, Audio
+https://pothabattulavinod.github.io/se/U/Pr.m4a
