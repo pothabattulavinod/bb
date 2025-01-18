@@ -1,3 +1,8 @@
 #EXTM3U
-#EXTINF:-1, Video Stream
-https://pothabattulavinod.github.io/se/Psr/video.m3u8
+#EXT-X-VERSION:3
+#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080
+https://pothabattulavinod.github.io/se/PSR/video.m3u8
+#EXT-X-STREAM-INF:BANDWIDTH=3000000,RESOLUTION=1280x720
+https://pothabattulavinod.github.io/se/PSR/video.m3u8
+#EXT-X-STREAM-INF:BANDWIDTH=1500000,RESOLUTION=854x480
+https://pothabattulavinod.github.io/se/PSR/video.m3u8
