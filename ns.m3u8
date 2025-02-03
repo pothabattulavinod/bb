@@ -1,0 +1,7 @@
+#EXTM3U  
+
+#EXT-X-STREAM-INF:BANDWIDTH=1500000,RESOLUTION=1920x1080  
+https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/saripodhaa/video.m3u8  
+
+#EXTINF:-1, Audio Track  
+https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/sa/s.m4a  
