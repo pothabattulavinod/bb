@@ -112,7 +112,8 @@
                 liveTimeout: 2,
                 dvrSeekLimit: 0,
                 dvrWindow: 0,
-                autostart: true
+                autostart: true,
+                mute: false // Unmute video by default
             });
 
             jwp.on('ready', function () {
@@ -135,6 +136,9 @@
                     event.stopPropagation();
                     event.preventDefault();
                 });
+
+                // Start playback immediately on page load
+                jwp.play();
             });
 
             jwp.on('pause', function () {
