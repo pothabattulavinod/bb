@@ -121,7 +121,7 @@
                     jwp.seek(seekPosition);
                 }
 
-                // **Prevent touch or click from pausing the video**
+                // Prevent touch or click from pausing the video
                 document.querySelector('.jwplayer').addEventListener('click', function (event) {
                     event.stopPropagation();
                     event.preventDefault();
@@ -137,8 +137,8 @@
                     event.preventDefault();
                 });
 
-                // Start playback immediately on page load
-                jwp.play();
+                // Force autoplay and start the video immediately
+                jwp.play(); // Force autoplay
             });
 
             jwp.on('pause', function () {
