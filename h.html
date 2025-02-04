@@ -90,8 +90,8 @@
             return { selectedVideo, seekPosition };
         }
 
-        // Refresh the video and play again with updated time
-        function refreshAndPlayVideo() {
+        // Function to set up and play the video
+        function setupAndPlayVideo() {
             let { selectedVideo, seekPosition } = getCurrentVideo();
 
             if (selectedVideo) {
@@ -161,11 +161,19 @@
         }
 
         // Immediately refresh and play the video when the page loads
-        refreshAndPlayVideo();
+        setupAndPlayVideo();
 
-        // Refresh video every minute (or a custom interval) to check for updates based on local time
-        setInterval(refreshAndPlayVideo, 60000); // Check every minute
+        // Randomize refresh interval between 30 seconds and 5 minutes (300,000 milliseconds)
+        function randomizeRefreshInterval() {
+            let randomTime = Math.floor(Math.random() * (300000 - 30000 + 1)) + 30000; // 30s to 5min
+            setTimeout(function () {
+                setupAndPlayVideo(); // Refresh the video setup
+                randomizeRefreshInterval(); // Set the next refresh interval
+            }, randomTime);
+        }
 
+        // Start the randomized refresh cycle
+        randomizeRefreshInterval();
     </script>
 </body>
 
