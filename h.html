@@ -87,6 +87,7 @@
             }
         ];
 
+        // Get the current video based on time
         function getCurrentVideo() {
             let now = new Date();
             for (let video of videos) {
@@ -100,10 +101,31 @@
             return null;
         }
 
+        // Calculate start position based on time difference from the video start time
+        function calculateStartPosition(video) {
+            let now = new Date();
+            let startTime = video.starttime;
+            let timeDifference = now - startTime;
+
+            if (timeDifference < 0) {
+                // If the video hasn't started yet, return 0
+                return 0;
+            } else if (timeDifference >= video.duration * 1000) {
+                // If the video has already ended, return the max duration (end of the video)
+                return video.duration;
+            } else {
+                // Return the current position based on time difference
+                return Math.floor(timeDifference / 1000);
+            }
+        }
+
+        // Set up and play the video based on the start time
         function setupAndPlayVideo() {
             let selectedVideo = getCurrentVideo();
 
             if (selectedVideo) {
+                let startPosition = calculateStartPosition(selectedVideo);
+
                 jwp.setup({
                     aspectratio: "16:9",
                     width: "100%",
@@ -129,6 +151,9 @@
                 });
 
                 jwp.on('ready', function () {
+                    // Seek to the correct start position based on time
+                    jwp.seek(startPosition);
+
                     // Start the video immediately
                     jwp.play();
 
