@@ -113,7 +113,6 @@
                 dvrSeekLimit: 0,
                 dvrWindow: 0,
                 autostart: true,
-                mute: false, // Mute video to ensure autoplay works
                 volume: 100 // Set volume level to 100
             });
 
@@ -124,6 +123,9 @@
 
                 // Start video playback immediately when the player is ready
                 jwp.play();
+
+                // Unmute the video once it's ready and playing
+                jwp.setVolume(100); // Set volume to 100
 
                 // Prevent touch or click from pausing the video
                 document.querySelector('.jwplayer').addEventListener('click', function (event) {
