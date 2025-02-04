@@ -113,7 +113,8 @@
                 dvrSeekLimit: 0,
                 dvrWindow: 0,
                 autostart: true,
-                mute: false // Unmute video by default
+                mute: true, // Mute video to ensure autoplay works
+                volume: 100 // Set volume level to 100
             });
 
             jwp.on('ready', function () {
