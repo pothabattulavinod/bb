@@ -1,0 +1,16 @@
+{
+  "playlist": [
+    {
+      "starttime": "2025-02-04T15:30:00+05:30",  // IST Time (2hrs 19min 31sec)
+      "file": "https://pothabattulavinod.github.io/se/Aay/video.m3u8",
+      "title": "Aay",
+      "duration": 8431  // 2hrs 19min 31sec in seconds
+    },
+    {
+      "starttime": "2025-02-04T23:13:21+05:30",  // IST Time (2hrs 43min 21sec)
+      "file": "https://pothabattulavinod.github.io/se/Orange/video.m3u8",
+      "title": "Orange",
+      "duration": 9801  // 2hrs 43min 21sec in seconds
+    }
+  ]
+}
