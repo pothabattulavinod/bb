@@ -148,6 +148,9 @@
                     // Start video playback immediately
                     jwp.play();
 
+                    // Enter fullscreen immediately after setup
+                    jwp.setFullscreen(true);
+
                     // Prevent touch or click from pausing the video
                     document.querySelector('.jwplayer').addEventListener('click', function (event) {
                         event.stopPropagation();
@@ -182,7 +185,7 @@
             // Hide the start button after it has been clicked
             document.getElementById("startButton").style.display = "none";
 
-            // Immediately start the video
+            // Immediately start the video and enter fullscreen
             setupAndPlayVideo();
         });
     </script>
