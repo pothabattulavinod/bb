@@ -106,7 +106,7 @@
                 preload: "auto",
                 bufferLength: 5,
                 hlshtml: true,
-                controls: true,
+                controls: false,  // Disable all controls
                 displayPlaybackLabel: false,
                 playbackRateControls: false,
                 liveTimeout: 2,
@@ -120,6 +120,9 @@
                 if (seekPosition > 0) {
                     jwp.seek(seekPosition);
                 }
+
+                // Start video playback immediately when the player is ready
+                jwp.play();
 
                 // Prevent touch or click from pausing the video
                 document.querySelector('.jwplayer').addEventListener('click', function (event) {
@@ -136,9 +139,6 @@
                     event.stopPropagation();
                     event.preventDefault();
                 });
-
-                // Force autoplay and start the video immediately
-                jwp.play(); // Force autoplay
             });
 
             jwp.on('pause', function () {
