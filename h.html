@@ -160,11 +160,12 @@
             }
         }
 
+        // Immediately refresh and play the video when the page loads
+        refreshAndPlayVideo();
+
         // Refresh video every minute (or a custom interval) to check for updates based on local time
         setInterval(refreshAndPlayVideo, 60000); // Check every minute
 
-        // Initial video setup
-        refreshAndPlayVideo();
     </script>
 </body>
 
