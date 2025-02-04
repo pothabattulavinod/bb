@@ -1,7 +1,7 @@
 {
   "playlist": [
     {
-      "starttime": "2025-02-04T15:30:00+05:30",  // IST Time (2hrs 19min 31sec)
+      "starttime": "2025-02-05T00:00:00+05:30",  // IST Time (2hrs 19min 31sec)
       "file": "https://pothabattulavinod.github.io/se/Aay/video.m3u8",
       "title": "Aay",
       "duration": 8431  // 2hrs 19min 31sec in seconds
