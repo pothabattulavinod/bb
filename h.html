@@ -109,7 +109,13 @@
                     dvrSeekLimit: 0,
                     dvrWindow: 0,
                     autostart: true,
-                    volume: 0
+                    volume: 0,
+                    logo: {
+                        file: "https://yourlogo.com/logo.png", // Change this URL to your logo
+                        link: "https://yourwebsite.com", // Optional: link when clicked
+                        position: "top-right", // Positions: top-left, top-right, bottom-left, bottom-right
+                        margin: 10 // Adjust spacing from edges
+                    }
                 });
 
                 jwp.on('ready', function () {
