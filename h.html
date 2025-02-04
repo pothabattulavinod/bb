@@ -189,6 +189,13 @@
                 jwp.on('complete', function () {
                     console.log("Stream completed.");
                 });
+
+                // Pause video when exiting fullscreen
+                jwp.on('fullscreen', function(event) {
+                    if (!event.jwstate) {
+                        jwp.pause(); // Pause the video when exiting fullscreen
+                    }
+                });
             } else {
                 console.error("No currently playing video.");
             }
