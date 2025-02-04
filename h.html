@@ -87,32 +87,23 @@
             }
         ];
 
-        // Function to check the current video based on the local time
         function getCurrentVideo() {
             let now = new Date();
-            let selectedVideo = null;
-            let seekPosition = 0;
-
             for (let video of videos) {
                 let startTime = video.starttime;
                 let endTime = new Date(startTime.getTime() + video.duration * 1000);
 
                 if (now >= startTime && now < endTime) {
-                    selectedVideo = video;
-                    seekPosition = Math.floor((now - startTime) / 1000);
-                    break;
+                    return video;
                 }
             }
-
-            return { selectedVideo, seekPosition };
+            return null;
         }
 
-        // Function to set up and play the video
         function setupAndPlayVideo() {
-            let { selectedVideo, seekPosition } = getCurrentVideo();
+            let selectedVideo = getCurrentVideo();
 
             if (selectedVideo) {
-                // Setup the player with the selected video
                 jwp.setup({
                     aspectratio: "16:9",
                     width: "100%",
@@ -138,20 +129,16 @@
                 });
 
                 jwp.on('ready', function () {
-                    if (seekPosition > 0) {
-                        jwp.seek(seekPosition);
-                    }
-
-                    // **Unmute the video after it has started playing**
-                    jwp.setVolume(100); // Set volume to 100 to unmute
-
-                    // Start video playback immediately
+                    // Start the video immediately
                     jwp.play();
 
                     // Enter fullscreen immediately after setup
                     if (!document.fullscreenElement) {
                         jwp.setFullscreen(true);
                     }
+
+                    // Unmute the video after it has started playing
+                    jwp.setVolume(100); // Unmute the video
 
                     // Prevent touch or click from pausing the video
                     document.querySelector('.jwplayer').addEventListener('click', function (event) {
