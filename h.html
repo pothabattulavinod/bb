@@ -12,6 +12,7 @@
         body {
             margin: 0;
             overflow: hidden;
+            text-align: center;
         }
 
         #player {
@@ -20,6 +21,21 @@
             overflow: hidden;
             background-color: #000;
             position: relative;
+        }
+
+        #startButton {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #startButton:hover {
+            background-color: #0056b3;
         }
 
         /* Hide all controls except fullscreen */
@@ -51,6 +67,7 @@
 
 <body>
     <div id="player"></div>
+    <button id="startButton">Start Video</button>
 
     <script>
         var jwp = jwplayer('player');
@@ -160,20 +177,14 @@
             }
         }
 
-        // Immediately refresh and play the video when the page loads
-        setupAndPlayVideo();
+        // Start the video when the "Start" button is clicked
+        document.getElementById("startButton").addEventListener("click", function() {
+            // Hide the start button after it has been clicked
+            document.getElementById("startButton").style.display = "none";
 
-        // Randomize refresh interval between 30 seconds and 5 minutes (300,000 milliseconds)
-        function randomizeRefreshInterval() {
-            let randomTime = Math.floor(Math.random() * (300000 - 30000 + 1)) + 30000; // 30s to 5min
-            setTimeout(function () {
-                setupAndPlayVideo(); // Refresh the video setup
-                randomizeRefreshInterval(); // Set the next refresh interval
-            }, randomTime);
-        }
-
-        // Start the randomized refresh cycle
-        randomizeRefreshInterval();
+            // Immediately start the video
+            setupAndPlayVideo();
+        });
     </script>
 </body>
 
