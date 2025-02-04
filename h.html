@@ -149,7 +149,9 @@
                     jwp.play();
 
                     // Enter fullscreen immediately after setup
-                    jwp.setFullscreen(true);
+                    if (!document.fullscreenElement) {
+                        jwp.setFullscreen(true);
+                    }
 
                     // Prevent touch or click from pausing the video
                     document.querySelector('.jwplayer').addEventListener('click', function (event) {
@@ -181,7 +183,7 @@
         }
 
         // Start the video when the "Start" button is clicked
-        document.getElementById("startButton").addEventListener("click", function() {
+        document.getElementById("startButton").addEventListener("click", function () {
             // Hide the start button after it has been clicked
             document.getElementById("startButton").style.display = "none";
 
