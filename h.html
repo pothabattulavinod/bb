@@ -17,13 +17,33 @@
         #player {
             width: 100%;
             height: 100%;
+            overflow: hidden;
             background-color: #000;
             position: relative;
         }
 
-        /* Hide all controls */
-        .jw-reset.jw-controlbar,
-        .jw-icon {
+        /* Hide all controls except fullscreen */
+        .jw-reset.jw-icon-play,
+        .jw-reset.jw-icon-pause,
+        .jw-reset.jw-icon-volume,
+        .jw-reset.jw-icon-rewind,
+        .jw-reset.jw-icon-forward,
+        .jw-reset.jw-icon-next,
+        .jw-reset.jw-icon-replay,
+        .jw-reset.jw-icon-time,
+        .jw-reset.jw-icon-playlist,
+        .jw-reset.jw-icon-share,
+        .jw-reset.jw-icon-captions,
+        .jw-reset.jw-controlbar {
+            display: none !important;
+        }
+
+        .jw-reset.jw-icon-fullscreen {
+            display: block !important;
+        }
+
+        /* Hide time display */
+        .jw-text-time {
             display: none !important;
         }
     </style>
@@ -86,28 +106,21 @@
                 preload: "auto",
                 bufferLength: 5,
                 hlshtml: true,
-                controls: false,  // Disable all controls
+                controls: true,
+                displayPlaybackLabel: false,
+                playbackRateControls: false,
+                liveTimeout: 2,
+                dvrSeekLimit: 0,
+                dvrWindow: 0,
                 autostart: true
             });
 
             jwp.on('ready', function () {
-                // Automatically enter fullscreen for all devices
-                var videoElement = document.querySelector('video');
-                if (videoElement.requestFullscreen) {
-                    videoElement.requestFullscreen();
-                } else if (videoElement.mozRequestFullScreen) { // Firefox
-                    videoElement.mozRequestFullScreen();
-                } else if (videoElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                    videoElement.webkitRequestFullscreen();
-                } else if (videoElement.msRequestFullscreen) { // IE/Edge
-                    videoElement.msRequestFullscreen();
-                }
-
                 if (seekPosition > 0) {
                     jwp.seek(seekPosition);
                 }
 
-                // Prevent pausing or interactions with the video player
+                // **Prevent touch or click from pausing the video**
                 document.querySelector('.jwplayer').addEventListener('click', function (event) {
                     event.stopPropagation();
                     event.preventDefault();
@@ -125,7 +138,7 @@
             });
 
             jwp.on('pause', function () {
-                jwp.play(); // Ensure video keeps playing in fullscreen
+                jwp.play(); // Force playback to continue
             });
 
             jwp.on('complete', function () {
