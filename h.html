@@ -13,6 +13,7 @@
             margin: 0;
             overflow: hidden;
             text-align: center;
+            background-color: black;
         }
 
         #player {
@@ -21,6 +22,7 @@
             overflow: hidden;
             background-color: #000;
             position: relative;
+            display: none; /* Hide player initially */
         }
 
         #startButton {
@@ -36,31 +38,6 @@
 
         #startButton:hover {
             background-color: #0056b3;
-        }
-
-        /* Hide all controls except fullscreen */
-        .jw-reset.jw-icon-play,
-        .jw-reset.jw-icon-pause,
-        .jw-reset.jw-icon-volume,
-        .jw-reset.jw-icon-rewind,
-        .jw-reset.jw-icon-forward,
-        .jw-reset.jw-icon-next,
-        .jw-reset.jw-icon-replay,
-        .jw-reset.jw-icon-time,
-        .jw-reset.jw-icon-playlist,
-        .jw-reset.jw-icon-share,
-        .jw-reset.jw-icon-captions,
-        .jw-reset.jw-controlbar {
-            display: none !important;
-        }
-
-        .jw-reset.jw-icon-fullscreen {
-            display: block !important;
-        }
-
-        /* Hide time display */
-        .jw-text-time {
-            display: none !important;
         }
     </style>
 </head>
@@ -87,7 +64,6 @@
             }
         ];
 
-        // Get the current video based on time
         function getCurrentVideo() {
             let now = new Date();
             for (let video of videos) {
@@ -101,28 +77,18 @@
             return null;
         }
 
-        // Calculate start position based on time difference from the video start time
         function calculateStartPosition(video) {
             let now = new Date();
             let startTime = video.starttime;
             let timeDifference = now - startTime;
 
-            if (timeDifference < 0) {
-                // If the video hasn't started yet, return 0
-                return 0;
-            } else if (timeDifference >= video.duration * 1000) {
-                // If the video has already ended, return the max duration (end of the video)
-                return video.duration;
-            } else {
-                // Return the current position based on time difference
-                return Math.floor(timeDifference / 1000);
-            }
+            if (timeDifference < 0) return 0;
+            else if (timeDifference >= video.duration * 1000) return video.duration;
+            else return Math.floor(timeDifference / 1000);
         }
 
-        // Set up and play the video based on the start time
         function setupAndPlayVideo() {
             let selectedVideo = getCurrentVideo();
-
             if (selectedVideo) {
                 let startPosition = calculateStartPosition(selectedVideo);
 
@@ -130,85 +96,57 @@
                     aspectratio: "16:9",
                     width: "100%",
                     height: "100%",
-                    sources: [{
-                        file: selectedVideo.file,
-                        type: "mp4",
-                        default: true
-                    }],
+                    sources: [{ file: selectedVideo.file, type: "mp4", default: true }],
                     title: selectedVideo.title || "",
                     primary: "html5",
-                    preload: "auto", // Ensure the video is preloaded
+                    preload: "auto",
                     bufferLength: 5,
                     hlshtml: true,
-                    controls: false,  // Disable all controls
+                    controls: false,
                     displayPlaybackLabel: false,
                     playbackRateControls: false,
                     liveTimeout: 2,
                     dvrSeekLimit: 0,
                     dvrWindow: 0,
                     autostart: true,
-                    volume: 0, // Start muted to ensure autoplay works
+                    volume: 0
                 });
 
                 jwp.on('ready', function () {
-                    // Seek to the correct start position based on time
                     jwp.seek(startPosition);
-
-                    // Start the video immediately
                     jwp.play();
-
-                    // Enter fullscreen immediately after setup
-                    if (!document.fullscreenElement) {
-                        jwp.setFullscreen(true);
-                    }
-
-                    // Unmute the video after it has started playing
-                    jwp.setVolume(100); // Unmute the video
-
-                    // Prevent touch or click from pausing the video
-                    document.querySelector('.jwplayer').addEventListener('click', function (event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                    });
-
-                    document.querySelector('.jwplayer').addEventListener('touchstart', function (event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                    });
-
-                    document.querySelector('.jwplayer').addEventListener('dblclick', function (event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                    });
+                    jwp.setVolume(100);
+                    document.getElementById("player").style.display = "block"; // Show player
+                    if (!document.fullscreenElement) jwp.setFullscreen(true);
                 });
 
                 jwp.on('pause', function () {
-                    jwp.play(); // Force playback to continue
+                    jwp.play();
                 });
 
                 jwp.on('complete', function () {
                     console.log("Stream completed.");
-                });
-
-                // Pause video when exiting fullscreen
-                jwp.on('fullscreen', function(event) {
-                    if (!event.jwstate) {
-                        jwp.pause(); // Pause the video when exiting fullscreen
-                    }
                 });
             } else {
                 console.error("No currently playing video.");
             }
         }
 
-        // Start the video when the "Start" button is clicked
         document.getElementById("startButton").addEventListener("click", function () {
-            // Hide the start button after it has been clicked
             document.getElementById("startButton").style.display = "none";
-
-            // Immediately start the video and enter fullscreen
             setupAndPlayVideo();
         });
+
+        function exitFullscreenHandler() {
+            if (!document.fullscreenElement) {
+                jwp.stop(); // Stop video
+                document.getElementById("player").style.display = "none"; // Hide player
+                document.getElementById("startButton").style.display = "inline-block"; // Show start button again
+            }
+        }
+
+        document.addEventListener("fullscreenchange", exitFullscreenHandler);
+        document.addEventListener("webkitfullscreenchange", exitFullscreenHandler);
     </script>
 </body>
 
