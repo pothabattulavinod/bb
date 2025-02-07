@@ -1,13 +1,22 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWPlayer with HLS Audio & Wake Lock</title>
     <script type="text/javascript" src="//ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> <!-- HLS.js for Audio -->
-    <script type="text/javascript">jwplayer.key="XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo"</script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script type="text/javascript">jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";</script>
     <style>
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
+            background-color: black;
+        }
+        #player {
+            width: 100%;
+            height: 100vh;
         }
         .jw-video {
             transform: scale(1.2);
@@ -34,6 +43,28 @@
         var teluguAudio = "https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/ag/audio_only_video.m3u8";
         var hlsAudio = new Hls();
         var syncCheckInterval = null;
+        let wakeLock = null;
+
+        async function requestWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    console.log("Screen Wake Lock is active");
+                    wakeLock.addEventListener('release', () => {
+                        console.log("Screen Wake Lock is released");
+                    });
+                }
+            } catch (err) {
+                console.error(`Wake Lock Error: ${err.message}`);
+            }
+        }
+
+        function releaseWakeLock() {
+            if (wakeLock !== null) {
+                wakeLock.release();
+                wakeLock = null;
+            }
+        }
 
         function loadHLSAudio() {
             return new Promise((resolve, reject) => {
@@ -63,7 +94,7 @@
                 let audioTime = audioElement.currentTime;
                 let difference = Math.abs(videoTime - audioTime);
 
-                if (difference > 0.3) { // Adjust only if difference is greater than 0.3s
+                if (difference > 0.3) { 
                     console.log("🔄 Syncing Audio: Video =", videoTime, ", Audio =", audioTime);
                     audioElement.currentTime = videoTime;
                 }
@@ -75,15 +106,17 @@
                 if (audioElement.paused) {
                     await loadHLSAudio();
                 }
+                requestWakeLock(); 
                 if (syncCheckInterval) clearInterval(syncCheckInterval);
-                syncCheckInterval = setInterval(checkAndSyncAudio, 500); // Check every 500ms, adjust only if needed
+                syncCheckInterval = setInterval(checkAndSyncAudio, 500);
             } catch (error) {
                 console.error("Error loading audio:", error);
             }
         });
 
-        player.on("pause", function() {
+        player.on("pause complete", function() {
             audioElement.pause();
+            releaseWakeLock();
             if (syncCheckInterval) clearInterval(syncCheckInterval);
         });
 
@@ -100,9 +133,9 @@
         });
 
         player.on("complete", function() {
-            audioElement.pause(); // Stop audio when video completes
+            audioElement.pause(); 
+            releaseWakeLock();
         });
-
     </script>
 </body>
 </html>
