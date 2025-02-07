@@ -1,1 +1,120 @@
+<html lang="en">
+<head>
+    <script type="text/javascript" src="//ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
+    <script type="text/javascript">jwplayer.key="XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo"</script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #player {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="player"></div>
+    <audio id="external-audio" preload="auto"></audio>
 
+    <script>
+        var player = jwplayer("player").setup({
+            file: "https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/gchdd/video.m3u8",
+            type: "hls",
+            width: "100%",
+            height: "100%",
+            aspectratio: "16:9",
+            autostart: true,
+            mute: false,
+            controls: true // Default controls enabled
+        });
+
+        var audioElement = document.getElementById("external-audio");
+        var teluguAudio = "https://csfiles.site/1470981/1.+DEVENU+-+%5BDD%2B+5.1+-+192Kbps%5D+-+%5BTelugu%5D+%28eac3%29.eac3?hash=AgADHx";
+
+        // Load Telugu audio
+        audioElement.src = teluguAudio;
+        audioElement.volume = 1.0; // Ensure full volume
+        audioElement.preload = "auto"; // Preload for smooth playback
+
+        function syncAudio() {
+            let videoTime = player.getPosition();
+            let audioTime = audioElement.currentTime;
+            
+            // Only adjust if the difference is noticeable
+            if (Math.abs(videoTime - audioTime) > 0.5) {
+                audioElement.currentTime = videoTime;
+            }
+        }
+
+        player.on("play", function() {
+            audioElement.play();
+            setInterval(syncAudio, 500); // Check and sync every 500ms
+        });
+
+        player.on("pause", function() {
+            audioElement.pause();
+        });
+
+        player.on("seek", function(event) {
+            audioElement.currentTime = event.offset;
+        });
+
+        player.on("buffer", function() {
+            audioElement.pause(); // Pause audio when video buffers
+        });
+
+        player.on("bufferChange", function() {
+            audioElement.play(); // Resume audio when buffering stops
+        });
+
+        // Store playback position
+        var playbackKey = "videoPlaybackPosition";
+
+        player.on('ready', function () {
+            // Seek to the saved position if available
+            var savedPosition = localStorage.getItem(playbackKey);
+            if (savedPosition && !isNaN(savedPosition)) {
+                player.seek(parseFloat(savedPosition));
+            }
+
+            const playerContainer = document.querySelector('#player');
+
+            // Display icon
+            const rewindContainer = playerContainer.querySelector('.jw-display-icon-rewind');
+            const forwardContainer = rewindContainer.cloneNode(true);
+            const forwardDisplayButton = forwardContainer.querySelector('.jw-icon-rewind');
+            forwardDisplayButton.style.transform = "scaleX(-1)";
+            forwardDisplayButton.ariaLabel = "Forward 10 Seconds";
+            const nextContainer = playerContainer.querySelector('.jw-display-icon-next');
+            nextContainer.parentNode.insertBefore(forwardContainer, nextContainer);
+
+            // Control bar icon
+            playerContainer.querySelector('.jw-display-icon-next').style.display = 'none'; // Hide next button
+            const buttonContainer = playerContainer.querySelector('.jw-button-container');
+            const rewindControlBarButton = buttonContainer.querySelector(".jw-icon-rewind");
+            const forwardControlBarButton = rewindControlBarButton.cloneNode(true);
+            forwardControlBarButton.style.transform = "scaleX(-1)";
+            forwardControlBarButton.ariaLabel = "Forward 10 Seconds";
+            rewindControlBarButton.parentNode.insertBefore(forwardControlBarButton, rewindControlBarButton.nextElementSibling);
+
+            // Add onclick handlers for forward buttons
+            [forwardDisplayButton, forwardControlBarButton].forEach(button => {
+                button.onclick = () => {
+                    player.seek(player.getPosition() + 10);
+                };
+            });
+        });
+
+        // Save the current playback position on time update using localStorage
+        player.on('time', function (event) {
+            localStorage.setItem(playbackKey, event.position); // Save current playback position permanently
+        });
+
+        // Clear the saved position if the video ends
+        player.on('complete', function () {
+            localStorage.removeItem(playbackKey); // Remove position when video is completed
+        });
+    </script>
+</body>
+</html>
