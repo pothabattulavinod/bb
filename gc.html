@@ -1,139 +1,108 @@
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="https://ssl.p.jwpcdn.com/player/v/8.36.2/jwplayer.js"></script>
-    <script>
-        jwplayer.key = 'cLGMn8T20tGvW+0eXPhq4NNmLB57TrscPjd1IyJF84o=';
-    </script>
+    <script type="text/javascript" src="//ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> <!-- HLS.js for Audio -->
+    <script type="text/javascript">jwplayer.key="XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo"</script>
     <style>
         body {
             margin: 0;
+            padding: 0;
             overflow: hidden;
         }
-
-        #player {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-        }
-
-        /* Custom player styles */
-        .jw-title-primary {
-            font-weight: bold;
-            font-size: 1.5em;
-            color: #ff6347 !important;
-        }
-
-        .jwplayer .jw-progress {
-            background-color: #ff6347 !important;
-        }
-
-        .jwplayer .jw-text-time {
-            color: #ff6347 !important;
-        }
-
-        .jwplayer .jw-button:hover {
-            background: #ff6347 !important;
-        }
-
-        .jw-rightclick .jw-reset {
-            display: none;
+        .jw-video {
+            transform: scale(1.2);
         }
     </style>
 </head>
-
 <body>
     <div id="player"></div>
+    <audio id="external-audio" preload="auto"></audio>
 
     <script>
-        var jwp = jwplayer('player');
-        var pageUrl = window.location.href; // Get the page URL
-        var playbackKey = `jwplayer-playback-position-${pageUrl}`; // Key to store playback position for the current page
-
-        // Load saved position from local storage
-        var savedPosition = localStorage.getItem(playbackKey);
-
-        jwp.setup({
-            aspectratio: "16:9",
+        var player = jwplayer("player").setup({
+            file: "https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/gchdd/video.m3u8",
+            type: "hls",
             width: "100%",
             height: "100%",
-            sources: [{
-                file: "https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/gchdd/video.m3u8",
-                type: "mp4",
-                default: true
-            }],
-            image: "",
-            primary: "html5",
-            preload: "auto",
-            title: "",
-            bufferLength: 5,
-            hlshtml: true,
-            controls: true,
-            displayPlaybackLabel: false,
-            playbackRateControls: true,
-            liveTimeout: 2,
-            dvrSeekLimit: 60,
-            dvrWindow: 3600,
-
-            logo: {
-                file: "",
-                position: "top-right",
-                margin: 10,
-                link: "",
-                hide: false,
-                width: 100,
-                height: 50
-            }
+            aspectratio: "16:9",
+            autostart: false,
+            mute: false,
+            controls: true
         });
 
-        jwp.on('ready', function () {
-            // Seek to the saved position if available
-            if (savedPosition && !isNaN(savedPosition)) {
-                jwp.seek(parseFloat(savedPosition));
-            }
+        var audioElement = document.getElementById("external-audio");
+        var teluguAudio = "https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/ag/audio_only_video.m3u8";
+        var hlsAudio = new Hls();
+        var syncCheckInterval = null;
 
-            const playerContainer = document.querySelector('#player');
+        function loadHLSAudio() {
+            return new Promise((resolve, reject) => {
+                if (Hls.isSupported()) {
+                    hlsAudio.loadSource(teluguAudio);
+                    hlsAudio.attachMedia(audioElement);
+                    hlsAudio.on(Hls.Events.MANIFEST_PARSED, function() {
+                        audioElement.play().then(resolve).catch(reject);
+                    });
 
-            // Display icon
-            const rewindContainer = playerContainer.querySelector('.jw-display-icon-rewind');
-            const forwardContainer = rewindContainer.cloneNode(true);
-            const forwardDisplayButton = forwardContainer.querySelector('.jw-icon-rewind');
-            forwardDisplayButton.style.transform = "scaleX(-1)";
-            forwardDisplayButton.ariaLabel = "Forward 10 Seconds";
-            const nextContainer = playerContainer.querySelector('.jw-display-icon-next');
-            nextContainer.parentNode.insertBefore(forwardContainer, nextContainer);
-
-            // Control bar icon
-            playerContainer.querySelector('.jw-display-icon-next').style.display = 'none'; // Hide next button
-            const buttonContainer = playerContainer.querySelector('.jw-button-container');
-            const rewindControlBarButton = buttonContainer.querySelector(".jw-icon-rewind");
-            const forwardControlBarButton = rewindControlBarButton.cloneNode(true);
-            forwardControlBarButton.style.transform = "scaleX(-1)";
-            forwardControlBarButton.ariaLabel = "Forward 10 Seconds";
-            rewindControlBarButton.parentNode.insertBefore(forwardControlBarButton, rewindControlBarButton.nextElementSibling);
-
-            // Add onclick handlers
-            [forwardDisplayButton, forwardControlBarButton].forEach(button => {
-                button.onclick = () => {
-                    jwp.seek(jwp.getPosition() + 10);
-                };
+                    hlsAudio.on(Hls.Events.ERROR, function(event, data) {
+                        console.error("HLS Audio Error:", data);
+                        reject("Audio failed to load");
+                    });
+                } else if (audioElement.canPlayType("application/vnd.apple.mpegurl")) {
+                    audioElement.src = teluguAudio;
+                    audioElement.play().then(resolve).catch(reject);
+                } else {
+                    reject("HLS Audio not supported");
+                }
             });
+        }
+
+        function checkAndSyncAudio() {
+            if (!audioElement.paused && player.getState() === "playing") {
+                let videoTime = player.getPosition();
+                let audioTime = audioElement.currentTime;
+                let difference = Math.abs(videoTime - audioTime);
+
+                if (difference > 0.3) { // Adjust only if difference is greater than 0.3s
+                    console.log("🔄 Syncing Audio: Video =", videoTime, ", Audio =", audioTime);
+                    audioElement.currentTime = videoTime;
+                }
+            }
+        }
+
+        player.on("play", async function() {
+            try {
+                if (audioElement.paused) {
+                    await loadHLSAudio();
+                }
+                if (syncCheckInterval) clearInterval(syncCheckInterval);
+                syncCheckInterval = setInterval(checkAndSyncAudio, 500); // Check every 500ms, adjust only if needed
+            } catch (error) {
+                console.error("Error loading audio:", error);
+            }
         });
 
-        // Save the current playback position on time update using localStorage
-        jwp.on('time', function (event) {
-            localStorage.setItem(playbackKey, event.position); // Save current playback position permanently
+        player.on("pause", function() {
+            audioElement.pause();
+            if (syncCheckInterval) clearInterval(syncCheckInterval);
         });
 
-        // Clear the saved position if the video ends
-        jwp.on('complete', function () {
-            localStorage.removeItem(playbackKey); // Remove position when video is completed
+        player.on("seek", function(event) {
+            audioElement.currentTime = event.offset;
         });
+
+        player.on("buffer", function() {
+            audioElement.pause();
+        });
+
+        player.on("bufferChange", function() {
+            audioElement.play();
+        });
+
+        player.on("complete", function() {
+            audioElement.pause(); // Stop audio when video completes
+        });
+
     </script>
 </body>
-
 </html>
