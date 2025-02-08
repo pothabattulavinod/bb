@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWPlayer with External Audio & Subtitles</title>
+  <script src="//ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
+  <script>
+    jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      overflow: hidden;
+    }
+    #player {
+      width: 100%;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="player"></div>
+  <script>
+    // Optional: Wake Lock functionality (if desired)
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          console.log("Screen Wake Lock is active");
+          wakeLock.addEventListener('release', () => {
+            console.log("Screen Wake Lock is released");
+          });
+        }
+      } catch (err) {
+        console.error(`Wake Lock Error: ${err.message}`);
+      }
+    }
+    function releaseWakeLock() {
+      if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+      }
+    }
+
+    // Initialize JWPlayer with the externally hosted master playlist
+    var player = jwplayer("player").setup({
+      file: "https://pothabattulavinod.github.io/bb/sub.m3u8", // Replace with your actual master playlist URL
+      type: "hls",
+      width: "100%",
+      height: "100%",
+      aspectratio: "16:9",
+      autostart: false,
+      mute: false,
+      controls: true
+    });
+
+    player.on("play", function () {
+      requestWakeLock();
+    });
+    player.on("pause complete", function () {
+      releaseWakeLock();
+    });
+    player.on("complete", function () {
+      releaseWakeLock();
+    });
+  </script>
+</body>
+</html>
