@@ -44,6 +44,22 @@
     .jw-rightclick .jw-reset {
       display: none;
     }
+    
+    /* Remove forced theme color for icons on controls:
+       We'll let the default JW Player icon colors (typically white) appear.
+       For our custom zoom button, we set its color to white and use currentColor for the SVG fill. */
+    .custom-zoom-button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0 8px;
+      color: #fff; /* Original JW Player icon color */
+    }
+    .custom-zoom-button svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
   </style>
 </head>
 <body>
@@ -86,20 +102,17 @@ https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/pushpa2/v
       title: "",
       bufferLength: 5,
       hlshtml: true,
-      // hls.js configuration (custom options can be added here if needed)
       html5: {
         hlsjsConfig: {}
       },
       // Disable automatic ABR switching so manual quality selection is preserved.
-      abr: {
-        enabled: false
-      },
+      abr: { enabled: false },
       controls: true,
       displayPlaybackLabel: false,
-      /* Removed playbackRateControls: true, */
       liveTimeout: 2,
       dvrSeekLimit: 60,
       dvrWindow: 3600,
+      mute: false, // Ensure audio is not muted.
       logo: {
         file: "",
         position: "top-right",
@@ -124,10 +137,10 @@ https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/pushpa2/v
       if (savedPosition && !isNaN(savedPosition)) {
         jwp.seek(parseFloat(savedPosition));
       }
-    
+      
       const playerContainer = document.querySelector('#player');
-    
-      // Display icon
+      
+      // Existing forward 10-second controls.
       const rewindContainer = playerContainer.querySelector('.jw-display-icon-rewind');
       const forwardContainer = rewindContainer.cloneNode(true);
       const forwardDisplayButton = forwardContainer.querySelector('.jw-icon-rewind');
@@ -135,35 +148,71 @@ https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/pushpa2/v
       forwardDisplayButton.ariaLabel = "Forward 10 Seconds";
       const nextContainer = playerContainer.querySelector('.jw-display-icon-next');
       nextContainer.parentNode.insertBefore(forwardContainer, nextContainer);
-    
-      // Control bar icon
-      playerContainer.querySelector('.jw-display-icon-next').style.display = 'none'; // Hide next button
+      
+      playerContainer.querySelector('.jw-display-icon-next').style.display = 'none';
       const buttonContainer = playerContainer.querySelector('.jw-button-container');
       const rewindControlBarButton = buttonContainer.querySelector(".jw-icon-rewind");
       const forwardControlBarButton = rewindControlBarButton.cloneNode(true);
       forwardControlBarButton.style.transform = "scaleX(-1)";
       forwardControlBarButton.ariaLabel = "Forward 10 Seconds";
       rewindControlBarButton.parentNode.insertBefore(forwardControlBarButton, rewindControlBarButton.nextElementSibling);
-    
-      // Add onclick handlers
+      
       [forwardDisplayButton, forwardControlBarButton].forEach(button => {
         button.onclick = () => {
           jwp.seek(jwp.getPosition() + 10);
         };
       });
+      
+      // --- Add custom zoom button to the left control container, placed next to the CC icon ---
+      let ccIcon = document.querySelector('.jw-icon-cc');
+      if (ccIcon && !document.querySelector('.custom-zoom-button')) {
+        let zoomButton = document.createElement('button');
+        zoomButton.className = 'custom-zoom-button';
+        // Set initial icon to "zoom in" (using an inline SVG with original JW Player icon color)
+        zoomButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zM8 2a6 6 0 1 1 0 12A6 6 0 0 1 8 2z"/>
+  <path d="M8 5a.5.5 0 0 1 .5.5v1h1a.5.5 0 0 1 0 1H8.5v1a.5.5 0 0 1-1 0v-1H6a.5.5 0 0 1 0-1h1V5.5A.5.5 0 0 1 8 5z"/>
+</svg>`;
+        // Insert the zoom button immediately after the CC icon.
+        ccIcon.parentNode.insertBefore(zoomButton, ccIcon.nextSibling);
+        
+        let zoomed = false;
+        zoomButton.addEventListener('click', function() {
+          let videoElem = document.querySelector('.jw-video');
+          if (videoElem) {
+            if (!zoomed) {
+              videoElem.style.transform = "scale(1.2)";
+              // Change icon to "zoom out" (minus in circle)
+              zoomButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zM8 2a6 6 0 1 1 0 12A6 6 0 0 1 8 2z"/>
+  <path d="M6 8a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3A.5.5 0 0 1 6 8z"/>
+</svg>`;
+              zoomed = true;
+            } else {
+              videoElem.style.transform = "";
+              // Revert icon to "zoom in"
+              zoomButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zM8 2a6 6 0 1 1 0 12A6 6 0 0 1 8 2z"/>
+  <path d="M8 5a.5.5 0 0 1 .5.5v1h1a.5.5 0 0 1 0 1H8.5v1a.5.5 0 0 1-1 0v-1H6a.5.5 0 0 1 0-1h1V5.5A.5.5 0 0 1 8 5z"/>
+</svg>`;
+              zoomed = false;
+            }
+          }
+        });
+        // Optionally, add some left-margin if needed.
+        zoomButton.style.marginLeft = "8px";
+      }
     });
     
-    // Save the current playback position on time update using localStorage
     jwp.on('time', function (event) {
       localStorage.setItem(playbackKey, event.position);
     });
     
-    // Clear the saved position if the video ends
     jwp.on('complete', function () {
       localStorage.removeItem(playbackKey);
     });
     
-    // --- hls.js support function ---
+    // hls.js support function
     function initHlsFunction() {
       if (typeof Hls !== "undefined") {
         if (Hls.isSupported()) {
@@ -176,6 +225,29 @@ https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/pushpa2/v
       }
     }
     initHlsFunction();
+    
+    // Fullscreen event listener: apply zoom automatically on mobile if current quality is 1080p.
+    jwp.on('fullscreen', function(event) {
+      let styleElem = document.getElementById("customZoomStyle");
+      if (!styleElem) {
+         styleElem = document.createElement("style");
+         styleElem.id = "customZoomStyle";
+         document.head.appendChild(styleElem);
+      }
+      // Only on mobile (viewport width < 768)
+      if (event.fullscreen && window.innerWidth < 768) {
+         var levels = jwp.getQualityLevels();
+         var currentQuality = jwp.getCurrentQuality();
+         // Check if current quality's file URL contains "pshd" (indicating 1080p)
+         if (levels[currentQuality] && levels[currentQuality].file && levels[currentQuality].file.toLowerCase().includes("pshd")) {
+            styleElem.innerHTML = ".jw-video { transform: scale(1.2) !important; }";
+         } else {
+            styleElem.innerHTML = "";
+         }
+      } else {
+         styleElem.innerHTML = "";
+      }
+    });
   </script>
 </body>
 </html>
