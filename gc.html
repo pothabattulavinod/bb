@@ -1,139 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JWPlayer with HLS Audio & Wake Lock</title>
-    <script type="text/javascript" src="//ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script type="text/javascript">jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";</script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: black;
-        }
-        #player {
-            width: 100%;
-            height: 100vh;
-        }
-   
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JWPlayer with Alternative Audio & Wake Lock</title>
+  <script src="//ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
+  <script>
+    jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+    #player {
+      width: 100%;
+      height: 100vh;
+    }
+  </style>
 </head>
 <body>
-    <div id="player"></div>
-    <audio id="external-audio" preload="auto"></audio>
+  <div id="player"></div>
+  <script>
+    // Build an inline HLS master playlist as a string.
+    // The EXT‑X‑MEDIA tag defines the alternative audio track.
+    const masterPlaylistContent = `#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",NAME="Alternative Audio",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI="https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/ag/audio_only_video.m3u8"
+#EXT-X-STREAM-INF:BANDWIDTH=2000000,RESOLUTION=1280x720,CODECS="avc1.4d401f",AUDIO="audio"
+https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/gchdd/video.m3u8`;
 
-    <script>
-        var player = jwplayer("player").setup({
-            file: "https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/gchdd/video.m3u8",
-            type: "hls",
-            width: "100%",
-            height: "100%",
-            aspectratio: "16:9",
-            autostart: false,
-            mute: false,
-            controls: true
-        });
+    // Create a Blob from the master playlist string and generate an object URL.
+    const blob = new Blob([masterPlaylistContent], { type: 'application/vnd.apple.mpegurl' });
+    const masterPlaylistUrl = URL.createObjectURL(blob);
 
-        var audioElement = document.getElementById("external-audio");
-        var teluguAudio = "https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/ag/audio_only_video.m3u8";
-        var hlsAudio = new Hls();
-        var syncCheckInterval = null;
-        let wakeLock = null;
-
-        async function requestWakeLock() {
-            try {
-                if ('wakeLock' in navigator) {
-                    wakeLock = await navigator.wakeLock.request('screen');
-                    console.log("Screen Wake Lock is active");
-                    wakeLock.addEventListener('release', () => {
-                        console.log("Screen Wake Lock is released");
-                    });
-                }
-            } catch (err) {
-                console.error(`Wake Lock Error: ${err.message}`);
-            }
+    // Wake Lock support: keep the screen on while the video is playing.
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          console.log("Screen Wake Lock is active");
+          wakeLock.addEventListener('release', () => {
+            console.log("Screen Wake Lock is released");
+          });
         }
+      } catch (err) {
+        console.error(`Wake Lock Error: ${err.message}`);
+      }
+    }
+    function releaseWakeLock() {
+      if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+      }
+    }
 
-        function releaseWakeLock() {
-            if (wakeLock !== null) {
-                wakeLock.release();
-                wakeLock = null;
-            }
-        }
+    // JWPlayer setup using the inline master playlist Blob URL.
+    var player = jwplayer("player").setup({
+      file: masterPlaylistUrl,
+      type: "hls",
+      width: "100%",
+      height: "100%",
+      aspectratio: "16:9",
+      autostart: false,
+      mute: false,
+      controls: true
+    });
 
-        function loadHLSAudio() {
-            return new Promise((resolve, reject) => {
-                if (Hls.isSupported()) {
-                    hlsAudio.loadSource(teluguAudio);
-                    hlsAudio.attachMedia(audioElement);
-                    hlsAudio.on(Hls.Events.MANIFEST_PARSED, function() {
-                        audioElement.play().then(resolve).catch(reject);
-                    });
-
-                    hlsAudio.on(Hls.Events.ERROR, function(event, data) {
-                        console.error("HLS Audio Error:", data);
-                        reject("Audio failed to load");
-                    });
-                } else if (audioElement.canPlayType("application/vnd.apple.mpegurl")) {
-                    audioElement.src = teluguAudio;
-                    audioElement.play().then(resolve).catch(reject);
-                } else {
-                    reject("HLS Audio not supported");
-                }
-            });
-        }
-
-        function checkAndSyncAudio() {
-            if (!audioElement.paused && player.getState() === "playing") {
-                let videoTime = player.getPosition();
-                let audioTime = audioElement.currentTime;
-                let difference = Math.abs(videoTime - audioTime);
-
-                if (difference > 0.3) { 
-                    console.log("🔄 Syncing Audio: Video =", videoTime, ", Audio =", audioTime);
-                    audioElement.currentTime = videoTime;
-                }
-            }
-        }
-
-        player.on("play", async function() {
-            try {
-                if (audioElement.paused) {
-                    await loadHLSAudio();
-                }
-                requestWakeLock(); 
-                if (syncCheckInterval) clearInterval(syncCheckInterval);
-                syncCheckInterval = setInterval(checkAndSyncAudio, 500);
-            } catch (error) {
-                console.error("Error loading audio:", error);
-            }
-        });
-
-        player.on("pause complete", function() {
-            audioElement.pause();
-            releaseWakeLock();
-            if (syncCheckInterval) clearInterval(syncCheckInterval);
-        });
-
-        player.on("seek", function(event) {
-            audioElement.currentTime = event.offset;
-        });
-
-        player.on("buffer", function() {
-            audioElement.pause();
-        });
-
-        player.on("bufferChange", function() {
-            audioElement.play();
-        });
-
-        player.on("complete", function() {
-            audioElement.pause(); 
-            releaseWakeLock();
-        });
-    </script>
+    // Request Wake Lock on play and release it on pause/complete.
+    player.on("play", function () {
+      requestWakeLock();
+    });
+    player.on("pause complete", function () {
+      releaseWakeLock();
+    });
+    player.on("complete", function () {
+      releaseWakeLock();
+    });
+  </script>
 </body>
 </html>
