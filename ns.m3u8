@@ -1,7 +1,5 @@
-#EXTM3U  
-
-#EXTINF:-1, Video Stream  
-https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/saripodhaa/video.m3u8  
-
-#EXTINF:-1, Audio Track  
-https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/sa/s.m4a  
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",NAME="Alternative Audio",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI="https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/ag/audio_only_video.m3u8"
+#EXT-X-STREAM-INF:BANDWIDTH=2000000,RESOLUTION=1280x720,CODECS="avc1.4d401f",AUDIO="audio"
+https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/gchdd/video.m3u8
