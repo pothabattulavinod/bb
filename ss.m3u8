@@ -1,0 +1,5 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",NAME="Alternative Audio",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI=""
+#EXT-X-STREAM-INF:BANDWIDTH=2000000,RESOLUTION=1280x720,CODECS="avc1.4d401f",AUDIO="audio"
+https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/saripodhaa/video.m3u8
