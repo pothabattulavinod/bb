@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JWPlayer with Alternative Audio & Wake Lock</title>
+  <script src="//ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
+  <script>
+    jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+    #player {
+      width: 100%;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="player"></div>
+  <script>
+    // Build an inline HLS master playlist as a string.
+    // The EXT‑X‑MEDIA tag defines the alternative audio track.
+    const masterPlaylistContent = `#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",NAME="Alternative Audio",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI="https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/ass/audio_only_video.m3u8"
+#EXT-X-STREAM-INF:BANDWIDTH=2000000,RESOLUTION=1280x720,CODECS="avc1.4d401f",AUDIO="audio"
+https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/saripodhaa/video.m3u8`;
+
+    // Create a Blob from the master playlist string and generate an object URL.
+    const blob = new Blob([masterPlaylistContent], { type: 'application/vnd.apple.mpegurl' });
+    const masterPlaylistUrl = URL.createObjectURL(blob);
+
+    // Wake Lock support: keep the screen on while the video is playing.
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          console.log("Screen Wake Lock is active");
+          wakeLock.addEventListener('release', () => {
+            console.log("Screen Wake Lock is released");
+          });
+        }
+      } catch (err) {
+        console.error(`Wake Lock Error: ${err.message}`);
+      }
+    }
+    function releaseWakeLock() {
+      if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+      }
+    }
+
+    // JWPlayer setup using the inline master playlist Blob URL.
+    var player = jwplayer("player").setup({
+      file: masterPlaylistUrl,
+      type: "hls",
+      width: "100%",
+      height: "100%",
+      aspectratio: "16:9",
+      autostart: false,
+      mute: false,
+      controls: true
+    });
+
+    // Request Wake Lock on play and release it on pause/complete.
+    player.on("play", function () {
+      requestWakeLock();
+    });
+    player.on("pause complete", function () {
+      releaseWakeLock();
+    });
+    player.on("complete", function () {
+      releaseWakeLock();
+    });
+  </script>
+</body>
+</html>
