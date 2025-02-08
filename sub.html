@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JWPlayer with External Audio & Subtitles</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
   <script src="//ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
   <script>
     jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";
@@ -12,8 +12,8 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: black;
       overflow: hidden;
+      background-color: black;
     }
     #player {
       width: 100%;
@@ -24,7 +24,19 @@
 <body>
   <div id="player"></div>
   <script>
-    // Optional: Wake Lock functionality (if desired)
+    // Build an inline HLS master playlist as a string.
+    // The EXT‑X‑MEDIA tag defines the alternative audio track.
+    const masterPlaylistContent = `#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",NAME="Alternative Audio",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI="https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/ass/audio_only_video.m3u8"
+#EXT-X-STREAM-INF:BANDWIDTH=2000000,RESOLUTION=1280x720,CODECS="avc1.4d401f",AUDIO="audio"
+https://raw.githubusercontent.com/pothabattulavinod/se/refs/heads/main/saripodhaa/video.m3u8`;
+
+    // Create a Blob from the master playlist string and generate an object URL.
+    const blob = new Blob([masterPlaylistContent], { type: 'application/vnd.apple.mpegurl' });
+    const masterPlaylistUrl = URL.createObjectURL(blob);
+
+    // Wake Lock support: keep the screen on while the video is playing.
     let wakeLock = null;
     async function requestWakeLock() {
       try {
@@ -46,18 +58,29 @@
       }
     }
 
-    // Initialize JWPlayer with the externally hosted master playlist
+    // JWPlayer setup using the inline master playlist Blob URL.
+    // Added the 'tracks' property to include subtitles.
     var player = jwplayer("player").setup({
-      file: "https://pothabattulavinod.github.io/bb/sub.m3u8", // Replace with your actual master playlist URL
+      file: masterPlaylistUrl,
       type: "hls",
       width: "100%",
       height: "100%",
       aspectratio: "16:9",
       autostart: false,
       mute: false,
-      controls: true
+      controls: true,
+      tracks: [
+        {
+          file: "https://raw.githubusercontent.com/pothabattulavinod/bb/refs/heads/main/Saripodhaa%20Sanivaaram%20(2024)%20Telugu%20HQ%20HDRip%20-%20250MB%20-%20x264%20-%20AAC%20-%20ESub.vtt",
+          label: "English",
+          kind: "captions",
+          "default": true,
+          language: "en"
+        }
+      ]
     });
 
+    // Request Wake Lock on play and release it on pause/complete.
     player.on("play", function () {
       requestWakeLock();
     });
