@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HARI E-TECHNO SCHOOL & COLLEGE</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome CDN for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fafafa;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #ffffff;
+      color: #333333;
+      text-align: center;
+      padding: 100px 20px 60px;
+      border-bottom: 3px solid #2c3e50;
+    }
+
+    header .logo-container {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    header img.logo {
+      width: 100px;
+      height: 100px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-top: 20px;
+      color: #3498db;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #555555;
+    }
+
+    .navbar {
+      background-color: #3498db;
+    }
+
+    .navbar-nav .nav-link {
+      color: white !important;
+      font-weight: 500;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 10px 15px;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+    }
+
+    .navbar-nav .nav-link.active {
+      background-color: ;
+      color: #1a73e8 !important;
+      border-radius: 5px;
+      font-weight: 600;
+    }
+
+    section {
+      padding: 60px 20px;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    .highlight {
+      background-color: #ecf5ff;
+      padding: 40px;
+      border-radius: 10px;
+      margin-bottom: 60px;
+      text-align: center;
+    }
+
+    .highlight h2 {
+      font-size: 2.2rem;
+      color: #2980b9;
+    }
+
+    .highlight p {
+      font-size: 1.1rem;
+      color: #333333;
+    }
+
+    .scrolling-gallery {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding-bottom: 10px;
+    }
+
+    .scrolling-gallery img {
+      height: 180px;
+      border-radius: 10px;
+    }
+
+    .sticky-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .sticky-buttons a {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .call-now-btn {
+      background-color: #e74c3c;
+    }
+
+    .call-now-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .whatsapp-btn {
+      background-color: #25d366;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #1ebc57;
+    }
+
+    .button-icon {
+      font-size: 25px;
+      color: white;
+    }
+
+    .list-group-item {
+      background-color: transparent;
+      border: none;
+      font-size: 1.1rem;
+      color: #2c3e50;
+    }
+
+    .contact-details {
+      margin-top: 30px;
+      font-size: 1.1rem;
+    }
+
+    .map-container {
+      margin-top: 30px;
+    }
+
+    .get-directions {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    form input, form textarea {
+      border-radius: 8px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand text-white fw-bold" href="#">HETS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#academics">Academics</a></li>
+          <li class="nav-item"><a class="nav-link" href="#facilities">Facilities</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sticky-buttons">
+    <a href="tel:+917799114947" class="call-now-btn"><i class="fas fa-phone-alt button-icon"></i></a>
+    <a href="https://wa.me/+917799114947" class="whatsapp-btn"><i class="fab fa-whatsapp button-icon"></i></a>
+  </div>
+
+  <header>
+    <div class="logo-container">
+      <img src="https://pothabattulavinod.github.io/bb/LOGO.png" alt="School Logo" class="logo" />
+    </div>
+    <h1>Hari E Techno School & Junior College</h1>
+    <p>Empowering Future Global Leaders</p>
+  </header>
+<!-- Poster Images Section (Scrollable) -->
+<section class="container py-5">
+  <div class="scrolling-posters">
+    <div class="poster">
+      <div class="image-box">
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" class="img-fluid rounded" alt="Poster 1" />
+      </div>
+    </div>
+    <div class="poster">
+      <div class="image-box">
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" class="img-fluid rounded" alt="Poster 2" />
+      </div>
+    </div>
+    <div class="poster">
+      <div class="image-box">
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" class="img-fluid rounded" alt="Poster 3" />
+      </div>
+    </div>
+    <div class="poster">
+      <div class="image-box">
+        <img src="https://via.placeholder.com/1200x800" class="img-fluid rounded" alt="Poster 4" />
+      </div>
+    </div>
+    <div class="poster">
+      <div class="image-box">
+        <img src="https://via.placeholder.com/1200x800" class="img-fluid rounded" alt="Poster 5" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Highlight Section -->
+
+
+<style>
+  .scrolling-posters {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* Enables scrolling snap */
+    gap: 0;
+    padding-bottom: 10px;
+    width: 100%;
+    height: 400px; /* Fixed height */
+    scroll-behavior: smooth; /* Smooth scrolling */
+  }
+
+  .poster {
+    flex: 0 0 100%; /* Ensures each poster takes full width of the container */
+    scroll-snap-align: start; /* Aligns the poster to the start when snapping */
+    height: 100%; /* Ensure height fills the container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image-box {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Hides overflow to maintain box size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #f0f0f0; /* Optional: adds background color */
+  }
+
+  .image-box img {
+    width: 100%; /* Ensure images fit within the box */
+    height: 100%; /* Maintain aspect ratio */
+    object-fit: cover; /* Make sure the image covers the box */
+  }
+
+  .scrolling-posters::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .scrolling-posters::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 5px;
+  }
+
+  .scrolling-posters::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+</style>
+
+<script>
+  const scrollingPosters = document.querySelector('.scrolling-posters');
+  const posters = document.querySelectorAll('.poster');
+  
+  let currentIndex = 0;
+  
+  function scrollToNextPoster() {
+    currentIndex = (currentIndex + 1) % posters.length; // Cycle through posters
+    scrollingPosters.scrollTo({
+      left: posters[currentIndex].offsetLeft,
+      behavior: 'smooth',
+    });
+  }
+  
+  // Automatically scroll every 3 seconds
+  setInterval(scrollToNextPoster, 3000);
+</script>
+
+
+<script>
+  const scrollingPosters = document.querySelector('.scrolling-posters');
+  const posters = document.querySelectorAll('.poster');
+  
+  let currentIndex = 0;
+  
+  function scrollToNextPoster() {
+    currentIndex = (currentIndex + 1) % posters.length; // Cycle through posters
+    scrollingPosters.scrollTo({
+      left: posters[currentIndex].offsetLeft,
+      behavior: 'smooth',
+    });
+  }
+  
+  // Automatically scroll every 3 seconds
+  setInterval(scrollToNextPoster, 3000);
+</script>
+
+
+
+  <section class="container highlight">
+    <h2>Welcome to Hari E Techno School & Junior College</h2>
+    <p>Shaping future leaders with a global perspective and strong moral foundation. Join us in our mission to educate and inspire!</p>
+  </section>
+
+  <section id="about" class="container">
+    <h2>About Us</h2>
+    <p style="font-size: 1.1rem; color: #333333; line-height: 1.6; text-align: justify; margin: 20px 0;"> <span style="background-color: ; font-weight: bold;">Hari E-Techno School & Junior College</span> is a premier educational institution committed to shaping young minds and preparing them for a brighter future. We blend the best of modern educational techniques with traditional values to provide our students with a holistic learning experience. Our school is located in the serene and picturesque environment of Rajanagaram, East Godavari, Andhra Pradesh.
+
+We offer a comprehensive curriculum that includes CBSE standards for school education, alongside IIT Foundation courses starting from class 8, preparing students for competitive exams like JEE Mains, IIT Advanced, and EAPCET. Our college section includes IPE courses, providing a solid foundation for higher education.
+
+At Hari E-Techno, we believe that education is more than just academics. Our programs are designed to develop the intellectual, social, physical, and emotional well-being of students. Through innovative teaching methods, state-of-the-art facilities, and a nurturing environment, we aim to produce not only academically proficient students but also responsible citizens of tomorrow.
+
+Our mission is to provide a learning environment that fosters curiosity, critical thinking, and creativity, preparing students to meet the challenges of the 21st century. Join us and become a part of the legacy of excellence in education.</p>
+    
+  </section>
+
+  <section id="academics" class="bg-light py-5">
+    <div class="container">
+      <h2>Academics</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <h4>School Education (CBSE Curriculum)</h4>
+          <p>Our primary program builds foundational skills in language, math, science, and social understanding with fun-based learning.</p>
+        </div>
+        <div class="col-md-6">
+          <h4>IIT Foundation (Starting from 8th Grade)</h4>
+          
+         <p> In addition to the regular academic program, we offer IIT Foundation Courses to help students develop the essential skills required for entrance exams like JEE Mains, IIT Advanced, and EAPCET. These courses are designed to help students build a strong foundation in Mathematics, Physics, and Chemistry.</p>
+        </div>
+         <div class="col-md-6">
+           
+          <h4>Junior College (IPE & Competitive Exam Preparation)</h4>
+           
+           <p>For students advancing to junior college, we provide a 2-year Intermediate Public Examination (IPE) curriculum, along with specialized coaching for EAPCET, JEE, and other competitive exams. Our focus is not only on academics but also on comprehensive training for future college admissions and career opportunities.</p>
+        </div>
+         <div class="col-md-6">
+          <h4>College Education (Undergraduate)</h4>
+          <p>Our college section is geared towards preparing students for higher education, providing them with the necessary knowledge and skills to excel in engineering, medical, and other professional fields. We focus on instilling a scientific mindset, critical analysis, and practical problem-solving.    </p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="facilities" class="container">
+    <h2>Facilities</h2>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Modern Smart Classrooms</li>
+      <li class="list-group-item">Science and Computer Labs</li>
+      <li class="list-group-item">Library with Global Resources</li>
+      <li class="list-group-item">Indoor & Outdoor Sports Facilities</li>
+      <li class="list-group-item">Safe Transportation & CCTV Surveillance</li>
+    </ul>
+  </section>
+
+  <section id="gallery" class="bg-light py-5">
+    <div class="container">
+      <h2>School Gallery</h2>
+      <div class="scrolling-gallery">
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" alt="Image 1" />
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" alt="Image 2" />
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" alt="Image 3" />
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" alt="Image 4" />
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" alt="Image 5" />
+        <img src="https://pothabattulavinod.github.io/bb/eid.jpg" alt="Image 6" />
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="container py-5">
+    <h2>Contact Us</h2>
+    <form>
+      <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Full Name" required />
+      </div>
+      <div class="mb-3">
+        <input type="email" class="form-control" placeholder="Email Address" required />
+      </div>
+      <div class="mb-3">
+        <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+
+    <div class="contact-details">
+      <p><strong>Phone:</strong> +91 77991 14947</p>
+      <p><strong>Email:</strong> harietechnoschool@gmail.com</p>
+      <p><strong>Address:</strong> Hari E Techno School & Junior College,  Rajanagaram, Jagannadhapuram Agraharam, Andhra Pradesh</p>
+    </div>
+
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps?q=17.075878,81.942973&z=15&output=embed" width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+
+    <div class="get-directions">
+      <a href="https://www.google.com/maps/dir/?api=1&destination=17.075878,81.942973" target="_blank" class="btn btn-info">Get Directions</a>
+    </div>
+  </section>
+
+<footer style="background-color: #2c3e50; color: white; text-align: center; padding: 20px 0;">
+  <p>&copy; 2025 Hari E Techno School & Junior College. All Rights Reserved.</p>
+</footer>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+<script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+  
+</body>
+</html>
